@@ -1,0 +1,15 @@
+
+
+Scout {
+    String name
+    }
+
+Team {
+    List<Scout> entries;
+    }
+
+
+Entry {
+    Team team;
+  }
+Requirement can display an entry and withing it a team add and remove team members
