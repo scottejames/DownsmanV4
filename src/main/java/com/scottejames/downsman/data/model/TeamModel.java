@@ -6,10 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamModel extends Model{
-    private List<ScoutModel> entries = null;
+    private List<ScoutModel> entries = new ArrayList<>();
+    private String name = null;
 
     public TeamModel() {
-        this.entries = new ArrayList<>();
+        this.name = "Undefined";
+    }
+
+    public TeamModel(String name) {
+        this.name = name;
     }
 
     public void addTeamMember(ScoutModel scout) throws NonEntityModel {

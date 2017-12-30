@@ -1,6 +1,8 @@
 package com.scottejames.downsman.data.service;
 
+import com.scottejames.downsman.data.exceptions.NonEntityModel;
 import com.scottejames.downsman.data.model.ScoutModel;
+import com.scottejames.downsman.data.model.TeamModel;
 
 public class ServiceManager {
 
@@ -29,5 +31,34 @@ public class ServiceManager {
 
     public void setTeamService(TeamService teamService) {
         this.teamService = teamService;
+    }
+
+    public void createTestData() {
+
+        TeamModel teamA = new TeamModel("TeamA");
+        TeamModel teamB = new TeamModel("TeamB");
+
+        teamService.add(teamA);
+        teamService.add(teamB);
+
+        ScoutModel scott = new ScoutModel("Scott");
+        ScoutModel andrew = new ScoutModel("Andrew");
+        ScoutModel george = new ScoutModel("George");
+
+        scoutService.add(scott);
+        scoutService.add(andrew);
+        scoutService.add(george);
+
+        try {
+            teamB.addTeamMember(scott);
+            teamB.addTeamMember(andrew);
+
+            teamA.addTeamMember(george);
+
+        } catch (NonEntityModel nonEntityModel) {
+            nonEntityModel.printStackTrace();
+            System.exit(-1);
+        }
+
     }
 }
