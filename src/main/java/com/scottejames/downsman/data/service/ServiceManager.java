@@ -10,6 +10,8 @@ public class ServiceManager {
     public static synchronized ServiceManager getInstance() {
         if (instance == null){
             instance = new ServiceManager();
+            // Create some sample data
+            instance.createTestData();
         }
         return instance;
     }

@@ -7,47 +7,38 @@ import com.scottejames.downsman.data.model.TeamModel;
 import com.scottejames.downsman.data.service.ServiceManager;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 
 @Theme("mytheme")
 public class MyUI extends UI {
-    private ServiceManager sm = ServiceManager.getInstance();
 
+    private int currentTeamId = 0;
+
+    private ServiceManager sm = ServiceManager.getInstance();
     private Grid<ScoutModel> grid = new Grid<>(ScoutModel.class);
-    private TextField filterText = new TextField();
+    ComboBox<TeamModel> teamSelection = new ComboBox<>();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-        // Create some sample data
-        sm.createTestData();
-
         final VerticalLayout layout = new VerticalLayout();
 
-        filterText.setPlaceholder("filter by filter...");
-        filterText.addValueChangeListener(e -> updateList());
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        teamSelection.setItemCaptionGenerator(TeamModel::getName);
 
-        Button clearFilterTextBtn  = new Button (VaadinIcons.CLOSE);
-        clearFilterTextBtn.setDescription("Clear the current filter");
-        clearFilterTextBtn.addClickListener(e-> filterText.clear());
+        teamSelection.setItems(sm.getTeamService().getAll());
+        teamSelection.setEmptySelectionAllowed(false);
 
-        CssLayout filtering = new CssLayout();
-        filtering.addComponents(filterText, clearFilterTextBtn);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        teamSelection.addValueChangeListener(event -> {this.teamSelectionChanged(event.getValue().getId());});
 
         Button addScoutButton = new Button("Add Scout");
         addScoutButton.addClickListener(e -> {
             grid.asSingleSelect().clear();
         });
-        HorizontalLayout toolBar = new HorizontalLayout(filtering,addScoutButton);
+        HorizontalLayout toolBar = new HorizontalLayout(teamSelection,addScoutButton);
 
         grid.setColumns("firstName", "lastName", "email");
 
@@ -63,6 +54,12 @@ public class MyUI extends UI {
         setContent(layout);
     }
 
+    private void teamSelectionChanged(int id) {
+
+       this.currentTeamId = id;
+       this.updateList();
+    }
+
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
@@ -70,7 +67,9 @@ public class MyUI extends UI {
 
     public void updateList() {
         //filterText.getValue()
-        List<ScoutModel> scouts = sm.getScoutService().getAll();
-        grid.setItems(scouts);
+        if (currentTeamId != 0) {
+            List<ScoutModel> scouts = sm.getTeamService().getById(currentTeamId).getEntries();
+            grid.setItems(scouts);
+        }
     }
 }

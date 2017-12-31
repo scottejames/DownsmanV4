@@ -18,17 +18,26 @@ public class TeamModel extends Model{
     }
 
     public void addTeamMember(ScoutModel scout) throws NonEntityModel {
-        if (scout.getId() == 0 ) {
-            throw new NonEntityModel("Trying to add a scout to team model that is not added to scout service");
-        }
+
         this.entries.add(scout);
     }
+
+    public List<ScoutModel> getEntries() {
+        return entries;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
     public void removeTeamMember(ScoutModel scout){
         int id = 0;
         for (int i = 0; i < this.entries.size(); i++){
             if (entries.get(i).getId() == scout.getId()){
                 id = i;
             }
+
         }
         this.entries.remove(id);
 
