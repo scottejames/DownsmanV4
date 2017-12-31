@@ -6,6 +6,13 @@ public class ScoutModel extends Model {
     private String lastName = null;
     private String email = null;
 
+    public ScoutModel() {
+    }
+    public ScoutModel(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
     public String getFirstName() {
         return firstName;
     }
@@ -30,9 +37,5 @@ public class ScoutModel extends Model {
         this.email = email;
     }
 
-    public ScoutModel(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
+
 }

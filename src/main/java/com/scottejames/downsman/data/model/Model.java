@@ -10,6 +10,9 @@ public class Model {
     public void setId(int id){
         this.id = id;
     }
+    public boolean isPersisted() {
+        return id != 0;
+    }
 
 
 }

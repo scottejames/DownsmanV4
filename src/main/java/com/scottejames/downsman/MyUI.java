@@ -21,6 +21,7 @@ public class MyUI extends UI {
     private ServiceManager sm = ServiceManager.getInstance();
     private Grid<ScoutModel> grid = new Grid<>(ScoutModel.class);
     ComboBox<TeamModel> teamSelection = new ComboBox<>();
+    private AddScoutForm c = new AddScoutForm(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -37,13 +38,15 @@ public class MyUI extends UI {
         Button addScoutButton = new Button("Add Scout");
         addScoutButton.addClickListener(e -> {
             grid.asSingleSelect().clear();
+            form.setScout(new ScoutModel());
+
         });
         HorizontalLayout toolBar = new HorizontalLayout(teamSelection,addScoutButton);
 
         grid.setColumns("firstName", "lastName", "email");
 
 
-        HorizontalLayout main = new HorizontalLayout(grid);
+        HorizontalLayout main = new HorizontalLayout(grid,form);
         main.setSizeFull();
         grid.setSizeFull();
         main.setExpandRatio(grid,1);
@@ -52,11 +55,21 @@ public class MyUI extends UI {
         updateList();
 
         setContent(layout);
+
+        form.setVisible(false);
+        grid.asSingleSelect().addValueChangeListener( event -> {
+            if (event.getValue() == null) {
+                form.setVisible(false);
+            } else {
+                form.setScout(event.getValue());
+            }
+        });
     }
 
     private void teamSelectionChanged(int id) {
 
        this.currentTeamId = id;
+       this.form.setTeam(sm.getTeamService().getById(id));
        this.updateList();
     }
 
