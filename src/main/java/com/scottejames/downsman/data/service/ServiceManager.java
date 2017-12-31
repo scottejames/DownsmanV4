@@ -41,9 +41,9 @@ public class ServiceManager {
         teamService.add(teamA);
         teamService.add(teamB);
 
-        ScoutModel scott = new ScoutModel("Scott");
-        ScoutModel andrew = new ScoutModel("Andrew");
-        ScoutModel george = new ScoutModel("George");
+        ScoutModel scott = new ScoutModel("Scott", "James", "scottejames@gmail.com");
+        ScoutModel andrew = new ScoutModel("Andrew", "Pain", "bob@scouts.com");
+        ScoutModel george = new ScoutModel("George", "frown", "frank@bob.com");
 
         scoutService.add(scott);
         scoutService.add(andrew);

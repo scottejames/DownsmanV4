@@ -42,8 +42,8 @@ public class TestService {
     @Test
     public void testAddScoutWithName(){
         ScoutService s = new ScoutService();
-        ScoutModel scott = new ScoutModel("Scott");
-        ScoutModel andrew = new ScoutModel("Andrew");
+        ScoutModel scott = new ScoutModel("Scott","James","foo@foo");
+        ScoutModel andrew = new ScoutModel("Andrew","frown","bar@bar");
 
         s.add(scott);
         s.add(andrew);
@@ -51,7 +51,7 @@ public class TestService {
         assertEquals(s.size(),2,"Added two scouts to service");
 
         ScoutModel result = s.getById(scott.getId());
-        assertEquals(result.getName(),"Scott");
+        assertEquals(result.getFirstName(),"Scott");
 
     }
 
@@ -61,7 +61,7 @@ public class TestService {
         ScoutService ss = sm.getScoutService();
         TeamService ts = sm.getTeamService();
 
-        ss.add(new ScoutModel("Fred"));
+        ss.add(new ScoutModel("Fred","Flintstone","boo@bar"));
         ts.add(new TeamModel());
 
         assertEquals(sm.getScoutService().size(), 1," added then pulled back by getInstance()");
